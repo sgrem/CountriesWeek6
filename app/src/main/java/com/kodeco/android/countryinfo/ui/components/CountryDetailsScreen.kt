@@ -1,12 +1,10 @@
 package com.kodeco.android.countryinfo.ui.components
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +23,7 @@ import com.kodeco.android.countryinfo.flow.Flows
 import com.kodeco.android.countryinfo.models.Country
 import com.kodeco.android.countryinfo.sample.sampleCountry
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun CountryDetailsScreen(
     country: Country,
@@ -33,33 +31,32 @@ fun CountryDetailsScreen(
 ) {
     Scaffold(
         topBar = {
-            Column {
-                CountryCountersRow() {}
-                TopAppBar(
-                    title = {
-                        Text(text = country.commonName)
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            // TODO: Call in to Flows.tapBack()
-                            Flows.tapBack()
-                            onNavigateUp()
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.ArrowBack,
-                                contentDescription = "Back",
-                            )
-                        }
+            TopAppBar(
+                title = {
+                    Text(text = country.commonName)
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        // TODO: Call in to Flows.tapBack()
+                        Flows.tapBack()
+                        onNavigateUp()
                     }
-                )
-            }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Back",
+                        )
+                    }
+                }
+            )
+
         },
     ) { padding ->
         LazyColumn(modifier = Modifier.padding(padding)) {
             item { Text(text = "Capital: ${country.mainCapital}") }
             item { Text(text = "Population: ${country.population}") }
             item { Text(text = "Area: ${country.area}") }
-            item { 
+            item {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(country.flagUrl)
@@ -73,6 +70,7 @@ fun CountryDetailsScreen(
         }
     }
 }
+
 
 @Preview
 @Composable

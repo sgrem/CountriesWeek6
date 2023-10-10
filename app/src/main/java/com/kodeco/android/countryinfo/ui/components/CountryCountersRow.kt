@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.kodeco.android.countryinfo.flow.Flows
 
 @Composable
-fun CountryCountersRow(onClick: () -> Unit) {
+fun CountryCountersRow(onRefreshClick: () -> Unit) {
     val tapValue by Flows.tapFlow.collectAsState()
     val backValue by Flows.backFlow.collectAsState()
     Row(
@@ -27,7 +27,7 @@ fun CountryCountersRow(onClick: () -> Unit) {
         Alignment.CenterVertically,
     ) {
         Text(text = "Taps: $tapValue")
-        Button(onClick = onClick) {
+        Button(onClick = onRefreshClick) {
             Text(text = "Refresh")
         }
         Text(text = "Back: $backValue")
@@ -38,6 +38,6 @@ fun CountryCountersRow(onClick: () -> Unit) {
 @Composable
 fun CountryCountersRowPreview() {
     CountryCountersRow(
-        onClick = {},
+        onRefreshClick = {},
     )
 }
