@@ -1,6 +1,5 @@
 package com.kodeco.android.countryinfo.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +10,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.kodeco.android.countryinfo.flow.Flows
 
@@ -20,9 +18,7 @@ fun CountryCountersRow(onRefreshClick: () -> Unit) {
     val tapValue by Flows.tapFlow.collectAsState()
     val backValue by Flows.backFlow.collectAsState()
     Row(
-        Modifier
-            .fillMaxWidth()
-            .background(Color.Cyan),
+        Modifier.fillMaxWidth(),
         Arrangement.SpaceAround,
         Alignment.CenterVertically,
     ) {
