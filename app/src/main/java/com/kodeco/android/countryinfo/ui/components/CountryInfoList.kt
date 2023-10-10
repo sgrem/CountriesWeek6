@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.kodeco.android.countryinfo.flow.Flows
 import com.kodeco.android.countryinfo.models.Country
 import com.kodeco.android.countryinfo.sample.sampleCountries
 
@@ -22,7 +23,7 @@ fun CountryInfoList(
     Column {
         // TODO: Implement the Row composable here that contains the
         //  the tap/back flow data and the refresh button.
-
+        CountryCountersRow { onRefreshClick() }
         selectedCountry?.let { country ->
             CountryDetailsScreen(country) { selectedCountry = null }
         } ?: run {
@@ -31,6 +32,7 @@ fun CountryInfoList(
                     CountryInfoRow(country) {
                         selectedCountry = country
                         // TODO: Call into Flows.tap() here
+                        Flows.tap()
                     }
                 }
             }

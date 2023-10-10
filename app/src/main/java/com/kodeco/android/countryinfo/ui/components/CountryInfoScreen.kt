@@ -59,7 +59,7 @@ fun CountryInfoScreen(
 private fun getCountryInfoFlow(service: CountryService): Flow<CountryInfoState> {
     return flow {
         try {
-            withTimeoutOrNull(5000) {  // Timeout after 30 seconds
+            withTimeoutOrNull(5000) {  // Timeout after 5 seconds
                 val countriesResponse = service.getAllCountries()
                 if (countriesResponse.isSuccessful) {
                     emit(CountryInfoState.Success(countriesResponse.body()!!))
