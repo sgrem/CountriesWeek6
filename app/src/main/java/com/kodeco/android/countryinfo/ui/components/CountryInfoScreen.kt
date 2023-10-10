@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.kodeco.android.countryinfo.models.Country
 import com.kodeco.android.countryinfo.network.CountryService
 import com.kodeco.android.countryinfo.sample.sampleCountries
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -59,9 +60,10 @@ fun CountryInfoScreen(
 private fun getCountryInfoFlow(service: CountryService): Flow<CountryInfoState> {
     return flow {
         try {
-            withTimeoutOrNull(5000) {  // Timeout after 5 seconds
+            withTimeoutOrNull(10000) {  // Timeout after 5 seconds
                 val countriesResponse = service.getAllCountries()
                 if (countriesResponse.isSuccessful) {
+                    delay(5000)
                     emit(CountryInfoState.Success(countriesResponse.body()!!))
                 } else {
                     emit(CountryInfoState.Error(Throwable("Request failed: ${countriesResponse.message()}")))
