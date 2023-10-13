@@ -11,7 +11,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.kodeco.android.countryinfo.models.Country
 import com.kodeco.android.countryinfo.network.CountryService
 import com.kodeco.android.countryinfo.sample.sampleCountries
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withTimeoutOrNull
 import retrofit2.Response
+
 
 sealed class CountryInfoState {
     object Loading : CountryInfoState()
@@ -43,17 +49,28 @@ fun CountryInfoScreen(
             //  and have the method return a Flow<CountryInfoState>
             //  NOTE: This method can utilize the flow { } builder.
             //  Don't forget you can also remove the try/catch and catch directly from the flow!
-            state = try {
-                val countriesResponse = service.getAllCountries()
+            getCountryInfoFlow(service)
+                .catch { e -> println("Error: ${e.message}") }
+                .collect { countryInfoState -> state = countryInfoState }
 
+        }
+    }
+}
+
+private fun getCountryInfoFlow(service: CountryService): Flow<CountryInfoState> {
+    return flow {
+        try {
+            withTimeoutOrNull(10000) {  // Timeout after 5 seconds
+                val countriesResponse = service.getAllCountries()
                 if (countriesResponse.isSuccessful) {
-                    CountryInfoState.Success(countriesResponse.body()!!)
+                    delay(5000)
+                    emit(CountryInfoState.Success(countriesResponse.body()!!))
                 } else {
-                    CountryInfoState.Error(Throwable("Request failed: ${countriesResponse.message()}"))
+                    emit(CountryInfoState.Error(Throwable("Request failed: ${countriesResponse.message()}")))
                 }
-            } catch (exception: Exception) {
-                CountryInfoState.Error(exception)
-            }
+            } ?: emit(CountryInfoState.Error(Throwable("Request timed out")))
+        } catch (e: Exception) {
+            emit(CountryInfoState.Error(e))
         }
     }
 }
